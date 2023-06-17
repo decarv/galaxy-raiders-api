@@ -79,6 +79,7 @@ class GameEngine(
   fun updateSpaceObjects() {
     if (!this.playing) return
     this.handleCollisions()
+    this.handleExplosions()
     this.moveSpaceObjects()
     this.trimSpaceObjects()
     this.generateAsteroids()
@@ -88,7 +89,26 @@ class GameEngine(
     this.field.spaceObjects.forEachPair {
         (first, second) ->
       if (first.impacts(second)) {
-        first.collideWith(second, GameEngineConfig.coefficientRestitution)
+        if (first.type == "Asteroid" && second.type == "Missile" || first.type == "Missile" && second.type == "Asteroid") {
+          val asteroid = if (first.type == "Asteroid") first else second
+          this.field.createExplosion(
+            asteroid.center,
+            asteroid.radius
+          )
+          first.exploded = true
+          second.exploded = true
+        } else {
+          first.collideWith(second, GameEngineConfig.coefficientRestitution)
+        }
+      }
+    }
+  }
+
+  fun handleExplosions() {
+    this.field.explosions.forEach { explosion ->
+      if (!explosion.isTriggered) {
+        explosion.triggerExplosion()
+        // TODO: renderExplosionEffect
       }
     }
   }

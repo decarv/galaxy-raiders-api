@@ -10,7 +10,8 @@ open class SpaceObject(
   initialPosition: Point2D,
   initialVelocity: Vector2D,
   radius: Double,
-  mass: Double
+  mass: Double,
+  var exploded: Boolean = false
 ) :
   Object2D(initialPosition, initialVelocity, radius, mass) {
   override fun toString(): String {
