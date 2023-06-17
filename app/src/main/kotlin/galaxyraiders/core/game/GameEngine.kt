@@ -1,6 +1,7 @@
 package galaxyraiders.core.game
 
 import galaxyraiders.Config
+import galaxyraiders.core.physics.Vector2D
 import galaxyraiders.ports.RandomGenerator
 import galaxyraiders.ports.ui.Controller
 import galaxyraiders.ports.ui.Controller.PlayerCommand
