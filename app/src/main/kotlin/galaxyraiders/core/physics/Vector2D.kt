@@ -73,7 +73,7 @@ data class Vector2D(val dx: Double, val dy: Double) {
    * @return A Vector2D object with the result.
    */
   operator fun div(scalar: Double): Vector2D {
-    return (1/scalar) * this
+    return (1 / scalar) * this
   }
 
   /**
@@ -121,7 +121,7 @@ data class Vector2D(val dx: Double, val dy: Double) {
    * @param v A Vector2D object.
    * @return A Vector2D object with the result.
    */
-    operator fun minus(v: Vector2D): Vector2D {
+  operator fun minus(v: Vector2D): Vector2D {
     return this + (-v)
   }
 
