@@ -66,13 +66,19 @@ data class SpaceField(val width: Int, val height: Int, val generator: RandomGene
 
   fun trimMissiles() {
     this.missiles = this.missiles.filter {
-      it.inBoundaries(this.boundaryX, this.boundaryY)
+      it.inBoundaries(this.boundaryX, this.boundaryY) && !it.exploded
     }
   }
 
   fun trimAsteroids() {
     this.asteroids = this.asteroids.filter {
-      it.inBoundaries(this.boundaryX, this.boundaryY)
+      it.inBoundaries(this.boundaryX, this.boundaryY) && !it.exploded
+    }
+  }
+
+  fun trimExplosions() {
+    this.explosions = this.explosions.filter {
+      !it.isTriggered
     }
   }
 
