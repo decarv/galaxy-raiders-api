@@ -1,12 +1,13 @@
 package galaxyraiders.core.game
 
 import galaxyraiders.Config
-import galaxyraiders.core.physics.Vector2D
+import galaxyraiders.core.score.StoreLeaderboard
 import galaxyraiders.ports.RandomGenerator
 import galaxyraiders.ports.ui.Controller
 import galaxyraiders.ports.ui.Controller.PlayerCommand
 import galaxyraiders.ports.ui.Visualizer
 import kotlin.system.measureTimeMillis
+import galaxyraiders.core.score.Scoreboard
 
 const val MILLISECONDS_PER_SECOND: Int = 1000
 
@@ -36,6 +37,8 @@ class GameEngine(
 
   var playing = true
 
+  var scoreboard: Scoreboard = Scoreboard()
+
   fun execute() {
     while (true) {
       val duration = measureTimeMillis { this.tick() }
@@ -50,6 +53,8 @@ class GameEngine(
     repeat(maxIterations) {
       this.tick()
     }
+    scoreboard.save()
+    StoreLeaderboard(scoreboard)
   }
 
   fun tick() {
@@ -80,7 +85,6 @@ class GameEngine(
   fun updateSpaceObjects() {
     if (!this.playing) return
     this.handleCollisions()
-    this.handleExplosions()
     this.moveSpaceObjects()
     this.trimSpaceObjects()
     this.generateAsteroids()
@@ -99,6 +103,7 @@ class GameEngine(
           )
           first.exploded = true
           second.exploded = true
+          scoreboard.computePoints(asteroid)
         } else {
           first.collideWith(second, GameEngineConfig.coefficientRestitution)
         }
