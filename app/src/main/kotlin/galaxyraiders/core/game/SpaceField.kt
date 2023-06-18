@@ -76,12 +76,6 @@ data class SpaceField(val width: Int, val height: Int, val generator: RandomGene
     }
   }
 
-  fun trimExplosions() {
-    this.explosions = this.explosions.filter {
-      !it.isTriggered
-    }
-  }
-
   private fun initializeShip(): SpaceShip {
     return SpaceShip(
       initialPosition = standardShipPosition(),
@@ -161,6 +155,10 @@ data class SpaceField(val width: Int, val height: Int, val generator: RandomGene
     )
 
     return scaledMass * SpaceFieldConfig.asteroidMassMultiplier
+  }
+
+  fun clearExplosions() {
+    this.explosions = emptyList()
   }
 
   fun createExplosion(initialPosition: Point2D, radius: Double) {
