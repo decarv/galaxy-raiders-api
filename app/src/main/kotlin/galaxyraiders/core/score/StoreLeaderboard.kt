@@ -4,7 +4,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import java.io.File
 
-class StoreLeaderboard (private var scoreboard: Scoreboard)  {
+class StoreLeaderboard (scoreboard: Scoreboard)  {
   private val gameScore: LeaderboardData = scoreboard.getLeaderboardData()
   private val leaderboard: MutableList<LeaderboardData>
 
