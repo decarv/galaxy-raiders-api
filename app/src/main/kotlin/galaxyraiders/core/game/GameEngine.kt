@@ -1,13 +1,13 @@
 package galaxyraiders.core.game
 
 import galaxyraiders.Config
-import galaxyraiders.core.score.StoreLeaderboard
+import galaxyraiders.core.score.Leaderboard
+import galaxyraiders.core.score.Scoreboard
 import galaxyraiders.ports.RandomGenerator
 import galaxyraiders.ports.ui.Controller
 import galaxyraiders.ports.ui.Controller.PlayerCommand
 import galaxyraiders.ports.ui.Visualizer
 import kotlin.system.measureTimeMillis
-import galaxyraiders.core.score.Scoreboard
 
 const val MILLISECONDS_PER_SECOND: Int = 1000
 
@@ -38,6 +38,7 @@ class GameEngine(
   var playing = true
 
   var scoreboard: Scoreboard = Scoreboard()
+  var leaderboard: Leaderboard = Leaderboard()
 
   fun execute() {
     while (true) {
@@ -53,8 +54,10 @@ class GameEngine(
     repeat(maxIterations) {
       this.tick()
     }
-    scoreboard.save()
-    StoreLeaderboard(scoreboard)
+    var scoreboardSaved = scoreboard.save()
+    if (scoreboardSaved) {
+      this.leaderboard.save(scoreboard.exportLeaderboardData())
+    }
   }
 
   fun tick() {
