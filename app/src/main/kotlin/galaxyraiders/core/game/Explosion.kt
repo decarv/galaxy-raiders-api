@@ -7,13 +7,5 @@ class Explosion(
   initialPosition: Point2D,
   initialVelocity: Vector2D,
   radius: Double,
-  mass: Double,
-  var isTriggered: Boolean = false
-) : SpaceObject("Explosion", '#', initialPosition, initialVelocity, radius, mass) {
-
-  fun triggerExplosion() {
-    if (!this.isTriggered) {
-      this.isTriggered = true
-    }
-  }
-}
+  mass: Double
+) : SpaceObject("Explosion", '#', initialPosition, initialVelocity, radius, mass)

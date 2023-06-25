@@ -98,7 +98,11 @@ class GameEngine(
     this.field.spaceObjects.forEachPair {
         (first, second) ->
       if (first.impacts(second)) {
-        if (first.type == "Asteroid" && second.type == "Missile" || first.type == "Missile" && second.type == "Asteroid") {
+        @Suppress("ComplexCondition")
+        if (
+          (first.type == "Asteroid" && second.type == "Missile") ||
+          (first.type == "Missile" && second.type == "Asteroid")
+        ) {
           val asteroid: Asteroid = if (first.type == "Asteroid") first as Asteroid else second as Asteroid
           this.field.createExplosion(
             asteroid.center,

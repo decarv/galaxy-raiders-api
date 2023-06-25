@@ -42,7 +42,7 @@ data class Vector2D(val dx: Double, val dy: Double) {
    * Calculates the angle of this Vector2D in degrees.
    */
   val degree: Double
-    get() = radiant * 180.0 / Math.PI
+    get() = Math.toDegrees(radiant)
 
   /**
    * Returns a unit vector of this Vector2D.
