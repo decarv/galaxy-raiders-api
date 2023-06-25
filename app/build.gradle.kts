@@ -32,6 +32,8 @@ plugins {
 
   // Apply the Jacoco plugin to generate test coverage.
   jacoco
+
+  kotlin("plugin.serialization") version "1.8.22"
 }
 
 repositories {
@@ -64,6 +66,8 @@ dependencies {
 
   // Allow JUnit 5 parameterized tests
   testImplementation("org.junit.jupiter:junit-jupiter-params:5.8.2")
+
+  implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
 }
 
 application {
