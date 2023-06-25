@@ -3,9 +3,9 @@ import com.fasterxml.jackson.databind.jsonschema.JsonSerializableSchema
 import java.sql.Timestamp
 
 @JsonSerializableSchema
-data class ScoreboardData (
+data class ScoreboardData(
   val gameId: Int,
-  val timeStamp: Timestamp,
+  val timestamp: Timestamp,
   val explodedAsteroidsNumber: Int,
   val score: Double
 )
