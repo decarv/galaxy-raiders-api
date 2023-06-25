@@ -164,11 +164,17 @@ data class SpaceField(val width: Int, val height: Int, val generator: RandomGene
   fun createExplosion(initialPosition: Point2D, radius: Double) {
     this.explosions += Explosion(
       initialPosition,
-      Vector2D(0.0,0.0),
+      Vector2D(0.0, 0.0),
       radius,
-      0.0,
-      isTriggered = false
+      0.0
     )
   }
 
+  fun addAsteroid(asteroid: Asteroid) {
+    this.asteroids += asteroid
+  }
+
+  fun addMissile(missile: Missile) {
+    this.missiles += missile
+  }
 }

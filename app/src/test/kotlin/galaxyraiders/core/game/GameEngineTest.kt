@@ -1,5 +1,7 @@
 package galaxyraiders.core.game
 
+import galaxyraiders.core.physics.Point2D
+import galaxyraiders.core.physics.Vector2D
 import galaxyraiders.helpers.AverageValueGeneratorStub
 import galaxyraiders.helpers.ControllerSpy
 import galaxyraiders.helpers.MaxValueGeneratorStub
@@ -236,5 +238,69 @@ class GameEngineTest {
       { assertEquals(expectedNumRenders, visualizerSpy.numRenders) },
       { assertTrue(hardGame.field.asteroids.size <= numPlayerCommands - 1) },
     )
+  }
+
+  @Test
+  fun `it should create explosion and compute points when an asteroid and missile collide`() {
+    val collisionPosition = Point2D(50.0, 50.0)
+    val initialVelocity = Vector2D(0.0, 0.0)
+    val radius = 5.0
+    val mass = 10.0
+    val asteroid = Asteroid(collisionPosition, initialVelocity, radius, mass)
+    val missile = Missile(collisionPosition, initialVelocity, radius, mass)
+    normalGame.field.addAsteroid(asteroid)
+    normalGame.field.addMissile(missile)
+    val initialScore = normalGame.scoreboard.getScore()
+    normalGame.handleCollisions()
+    normalGame.trimSpaceObjects()
+    assertAll(
+      "GameEngine should create an explosion",
+      {
+        assertTrue("Explosion should be created upon missile and asteroid collision") {
+          normalGame.field.explosions.isNotEmpty()
+        }
+      },
+      { assertTrue("Asteroid should be marked as exploded") { asteroid.exploded } },
+      { assertTrue("Missile should be marked as exploded") { missile.exploded } },
+      {
+        assertTrue("Asteroid should be removed from field upon collision") {
+          asteroid !in normalGame.field.asteroids
+        }
+      },
+      {
+        assertTrue("Missile should be removed from field upon collision") {
+          missile !in normalGame.field.missiles
+        }
+      },
+      {
+        assertTrue("Scoreboard should update the score when an asteroid and missile collide") {
+          initialScore != normalGame.scoreboard.getScore()
+        }
+      }
+    )
+  }
+
+  @Test
+  fun `it should clear explosions at the start of handleCollisions`() {
+    val collisionPosition = Point2D(50.0, 50.0)
+    val initialVelocity = Vector2D(0.0, 0.0)
+    val radius = 5.0
+    val mass = 10.0
+    val asteroid = Asteroid(collisionPosition, initialVelocity, radius, mass)
+    val missile = Missile(collisionPosition, initialVelocity, radius, mass)
+    normalGame.field.addAsteroid(asteroid)
+    normalGame.field.addMissile(missile)
+    normalGame.handleCollisions()
+    normalGame.trimSpaceObjects()
+    normalGame.handleCollisions()
+    assertTrue("Previous explosions should be cleared before handling new ones") {
+      normalGame.field.explosions.isEmpty()
+    }
+  }
+
+  @Test
+  fun `it should store leaderboard after maximum iterations`() {
+    normalGame.execute(1)
+    assertTrue("Scoreboard should update after the game execution") { normalGame.leaderboard.getFileLength() > 0 }
   }
 }

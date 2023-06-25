@@ -32,6 +32,7 @@ class SpaceObjectTest {
       { assertEquals(Vector2D(1.0, 0.0), so.velocity) },
       { assertEquals(1.0, so.radius) },
       { assertEquals(1.0, so.mass) },
+      { assertEquals(false, so.exploded) }
     )
   }
 
